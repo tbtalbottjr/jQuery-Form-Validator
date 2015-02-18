@@ -1288,7 +1288,7 @@
 
             if (!hasTopDomain) {
                 return false;
-            } else if (dot < 2 || dot > 57) {
+            } else if (dot < 1 || dot > 57) {
                 return false;
             } else {
                 var firstChar = domain.substring(0, 1),
