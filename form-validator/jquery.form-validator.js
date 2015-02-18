@@ -358,7 +358,10 @@
          * @param {String} type
          * @return {Boolean}
          */
-        ignoreInput = function(name, type) {
+        ignoreInput = function($elem, name, type) {
+            if (conf.ignoreInvisible && !$elem.is(':visible')) {
+                return true;
+            }
             if (type === 'submit' || type === 'button' || type == 'reset') {
                 return true;
             }
@@ -378,7 +381,7 @@
                 isCheckboxOrRadioBtn = elementType == 'radio' || elementType == 'checkbox',
                 elementName = $elem.attr('name');
 
-            if (!ignoreInput(elementName, elementType) && (!isCheckboxOrRadioBtn || $.inArray(elementName, checkedInputs) < 0) ) {
+            if (!ignoreInput($elem, elementName, elementType) && (!isCheckboxOrRadioBtn || $.inArray(elementName, checkedInputs) < 0) ) {
 
                 if( isCheckboxOrRadioBtn )
                     checkedInputs.push(elementName);
@@ -652,6 +655,7 @@
         defaultConfig :  function() {
             return {
                 ignore : [], // Names of inputs not to be validated even though node attribute containing the validation rules tells us to
+                ignoreInvisible : false,
                 errorElementClass : 'error', // Class that will be put on elements which value is invalid
                 borderColorOnError : 'red', // Border color of elements which value is invalid, empty string to not change border color
                 errorMessageClass : 'form-error', // class name of div containing error messages when validation fails
