@@ -307,11 +307,15 @@
          * @param {String} type
          * @return {Boolean}
          */
-        ignoreInput = function(name, type) {
+        ignoreInput = function($elem) {
+            if (conf.ignoreInvisible && !$elem.is(':visible')) {
+                return true;
+            }
+            var type = $elem.attr('type');
             if (type === 'submit' || type === 'button' || type == 'reset') {
                 return true;
             }
-            return $.inArray(name, conf.ignore || []) > -1;
+            return $.inArray($elem.attr('name'), conf.ignore || []) > -1;
         };
 
         // Reset style and remove error class
@@ -321,8 +325,7 @@
         // Validate element values
         $form.find('input,textarea,select').filter(':not([type="submit"],[type="button"])').each(function() {
             var $elem = $(this);
-            var elementType = $elem.attr('type');
-            if (!ignoreInput($elem.attr('name'), elementType)) {
+            if (!ignoreInput($elem)) {
 
                 var validation = $.formUtils.validateInput(
                                 $elem,
@@ -561,6 +564,7 @@
         defaultConfig :  function() {
             return {
                 ignore : [], // Names of inputs not to be validated even though node attribute containing the validation rules tells us to
+                ignoreInvisible : false,
                 errorElementClass : 'error', // Class that will be put on elements which value is invalid
                 borderColorOnError : 'red', // Border color of elements which value is invalid, empty string to not change border color
                 errorMessageClass : 'form-error', // class name of div containing error messages when validation fails
@@ -1354,7 +1358,7 @@
 
             if (!hasTopDomain) {
                 return false;
-            } else if (dot < 2 || dot > 57) {
+            } else if (dot < 1 || dot > 57) {
                 return false;
             } else {
                 var firstChar = domain.substring(0, 1),
