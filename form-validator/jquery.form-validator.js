@@ -797,7 +797,7 @@
                 validateIfCheckedElement = $form.find('input[name="' + validateIfCheckedElementName + '"]');
 
                 // test if it's property "checked" is checked
-                if ( validateIfCheckedElement.prop('checked') ) {
+                if ( validateIfCheckedElement.is(':checked') ) {
                     // set value for validation checkpoint
                     validationDependentInputIsChecked = true;
                 }
